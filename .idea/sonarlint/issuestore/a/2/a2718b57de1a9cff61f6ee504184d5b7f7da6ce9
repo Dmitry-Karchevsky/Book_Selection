@@ -1,0 +1,10 @@
+
+F
+java:S2387‘"#"x" is the name of a field in "T1".(Â€¬ßùÿÿÿÿ8¡“Â…‹/
+X	java:S125	"<This block of commented-out lines of code should be removed.(äŠæ³8á°ï‰‹/
+C	java:S1310""Add a default case to this switch.(ž’Ã›ùÿÿÿÿ8­…‡Š‹/
+r	java:S117p"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¸‘çìÿÿÿÿÿ8µ‚ª’‹/
+n
+java:S1104~"QMake years a static final constant or non-public and provide accessors if needed.(²Ážþ8¨“±’‹/
+u
+java:S1104‚"RMake amount a static final constant or non-public and provide accessors if needed.(¶â¤·ýÿÿÿÿ8¨“±’‹/
