@@ -1,4 +1,4 @@
-package entities;
+package bookselectionapp.entities;
 
 import org.springframework.security.core.GrantedAuthority;
 

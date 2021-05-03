@@ -1,4 +1,4 @@
-package entities;
+package bookselectionapp.entities;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -21,7 +21,7 @@ public class Genre {
     private Set<Book> books;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private Set<User> usersPrefereGenre;
+    private Set<User> usersPreferesGenre;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Author> authorsGenres;
@@ -66,12 +66,12 @@ public class Genre {
         this.books = books;
     }
 
-    public Set<User> getUsersPrefereGenre() {
-        return usersPrefereGenre;
+    public Set<User> getUsersPreferesGenre() {
+        return usersPreferesGenre;
     }
 
-    public void setUsersPrefereGenre(Set<User> usersPrefereGenre) {
-        this.usersPrefereGenre = usersPrefereGenre;
+    public void setUsersPreferesGenre(Set<User> usersPrefereGenre) {
+        this.usersPreferesGenre = usersPrefereGenre;
     }
 
     public Set<Author> getAuthorsGenres() {

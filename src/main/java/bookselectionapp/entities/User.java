@@ -1,4 +1,4 @@
-package entities;
+package bookselectionapp.entities;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,10 +47,10 @@ public class User implements UserDetails {
     @ManyToMany(mappedBy = "usersLikedInCollectionBook", fetch = FetchType.EAGER)
     private Set<Book> likedCollectionBooks;
 
-    @ManyToMany(mappedBy = "usersPrefereGenre", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "usersPreferesGenre", fetch = FetchType.EAGER)
     private Set<Genre> preferenceGenres;
 
-    @ManyToMany(mappedBy = "usersPrefereCategory", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "usersPreferesCategory", fetch = FetchType.EAGER)
     private Set<Category> preferenceCategories;
 
     public User() {

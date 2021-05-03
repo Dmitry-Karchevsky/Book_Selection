@@ -1,4 +1,4 @@
-package entities;
+package bookselectionapp.entities;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -10,7 +10,7 @@ public class Author {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 100)
+    @Column(length = 100, unique = true)
     private String name;
 
     @Column(length = 2000)

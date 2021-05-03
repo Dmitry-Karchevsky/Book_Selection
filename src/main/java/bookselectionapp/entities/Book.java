@@ -1,6 +1,4 @@
-package entities;
-
-import com.fasterxml.jackson.annotation.JsonView;
+package bookselectionapp.entities;
 
 import javax.persistence.*;
 import java.time.LocalDate;
