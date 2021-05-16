@@ -39,7 +39,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User saveUser(User newUser) {
-        if (userRepository.findByEmail(newUser.getEmail()) == null) {
+        if (userRepository.findByEmail(newUser.getEmail()) != null) {
             return null;
         }
 
@@ -47,6 +47,18 @@ public class UserService implements UserDetailsService {
         newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
         userRepository.save(newUser);
         return newUser;
+    }
+
+    public User updateUser(Long id, User user) {
+        user.setId(id);
+        Optional<User> userFromDb = userRepository.findById(id);
+        if (userFromDb.isPresent()) {
+            user.setRoles(userFromDb.get().getRoles());
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
+            return user;
+        }
+        return null;
     }
 
     public boolean isTrueUser(Long id) {

@@ -1,7 +1,6 @@
 package bookselectionapp.entities;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
 
@@ -14,7 +13,7 @@ public class Book {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private Author author;
 
@@ -26,13 +25,16 @@ public class Book {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    private Integer ageCategory;
+    @Column
+    private String ageCategory;
 
-    private String language;
+    @Column
+    private String linkImage;
 
-    private LocalDate datePublication;
+    @Column
+    private Integer yearPublication;
 
-    @Column(length = 2000)
+    @Column(length = 20000)
     private String info;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -45,6 +47,11 @@ public class Book {
     private Set<User> usersLikedInCollectionBook;
 
     public Book() {
+    }
+
+    public Book(String name, Author author) {
+        this.name = name;
+        this.author = author;
     }
 
     public Long getId() {
@@ -79,6 +86,22 @@ public class Book {
         this.genre = genre;
     }
 
+    public String getLinkImage() {
+        return linkImage;
+    }
+
+    public void setLinkImage(String linkImage) {
+        this.linkImage = linkImage;
+    }
+
+    public Integer getYearPublication() {
+        return yearPublication;
+    }
+
+    public void setYearPublication(Integer yearPublication) {
+        this.yearPublication = yearPublication;
+    }
+
     public Category getCategory() {
         return category;
     }
@@ -87,28 +110,12 @@ public class Book {
         this.category = category;
     }
 
-    public Integer getAgeCategory() {
+    public String getAgeCategory() {
         return ageCategory;
     }
 
-    public void setAgeCategory(Integer ageCategory) {
+    public void setAgeCategory(String ageCategory) {
         this.ageCategory = ageCategory;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
-    }
-
-    public LocalDate getDatePublication() {
-        return datePublication;
-    }
-
-    public void setDatePublication(LocalDate datePublication) {
-        this.datePublication = datePublication;
     }
 
     public String getInfo() {
@@ -154,5 +161,19 @@ public class Book {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", author=" + author +
+                ", genre=" + genre +
+                ", category=" + category +
+                ", ageCategory=" + ageCategory +
+                ", linkImage='" + linkImage + '\'' +
+                ", info='" + info + '\'' +
+                '}';
     }
 }

@@ -1,13 +1,12 @@
 package bookselectionapp.controllers;
 
 import bookselectionapp.entities.User;
+import bookselectionapp.entities.Views;
 import bookselectionapp.services.UserService;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/lk")
@@ -26,6 +25,18 @@ public class UserLkController {
             return ResponseEntity.notFound().build();
         } else {
             return ResponseEntity.ok(userFromDB);
+        }
+    }
+
+    @PutMapping("/{id}")
+    @JsonView(Views.RequiredField.class)
+    public ResponseEntity<User> updateUser(@RequestBody User user,
+                                           @PathVariable Long id) {
+        User updatedUser = userService.updateUser(id, user);
+        if (updatedUser == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(updatedUser);
         }
     }
 }

@@ -1,5 +1,7 @@
 package bookselectionapp.entities;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,44 +15,59 @@ import java.util.Set;
 @Table(name = "usr")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(updatable = false)
+    @GenericGenerator(name="users_seq", strategy = "UseExistingOrGenerateIdGenerator")
+    @SequenceGenerator(name="users_seq", sequenceName="user_id_seq", allocationSize=1)
+    @JsonView(Views.RequiredField.class)
     private Long id;
 
     @Column(nullable = false, length = 60, unique = true)
+    @JsonView(Views.RequiredField.class)
     private String email;
 
     @Column(nullable = false, length = 100)
     @Size(min=3, message = "Не меньше 3 знаков")
+    @JsonView(Views.RequiredField.class)
     private String password;
 
     @Column(nullable = false, length = 100)
+    @JsonView(Views.RequiredField.class)
     private String name;
 
     @Column(nullable = false)
+    @JsonView(Views.RequiredField.class)
     private Integer age;
 
     @Column(nullable = false, length = 30)
+    @JsonView(Views.RequiredField.class)
     private String language;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @JsonView(Views.RequiredField.class)
     private Set<Role> roles;
 
     @ManyToMany(mappedBy = "followersUsers", fetch = FetchType.EAGER)
+    @JsonView(Views.NotRequiredField.class)
     private Set<Author> preferenceAuthors;
 
     @ManyToMany(mappedBy = "usersReadBook", fetch = FetchType.EAGER)
+    @JsonView(Views.NotRequiredField.class)
     private Set<Book> readBooks;
 
     @ManyToMany(mappedBy = "usersPrefersBook", fetch = FetchType.EAGER)
+    @JsonView(Views.NotRequiredField.class)
     private Set<Book> preferenceBooks;
 
     @ManyToMany(mappedBy = "usersLikedInCollectionBook", fetch = FetchType.EAGER)
+    @JsonView(Views.NotRequiredField.class)
     private Set<Book> likedCollectionBooks;
 
     @ManyToMany(mappedBy = "usersPreferesGenre", fetch = FetchType.EAGER)
+    @JsonView(Views.NotRequiredField.class)
     private Set<Genre> preferenceGenres;
 
     @ManyToMany(mappedBy = "usersPreferesCategory", fetch = FetchType.EAGER)
+    @JsonView(Views.NotRequiredField.class)
     private Set<Category> preferenceCategories;
 
     public User() {

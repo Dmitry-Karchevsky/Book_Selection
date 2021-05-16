@@ -13,7 +13,10 @@ public class Author {
     @Column(length = 100, unique = true)
     private String name;
 
-    @Column(length = 2000)
+    @Column
+    private String linkImage;
+
+    @Column(length = 20000)
     private String info;
 
     @OneToMany(mappedBy = "author")
@@ -26,6 +29,11 @@ public class Author {
     private Set<Genre> preferenceGenres;
 
     public Author() {
+    }
+
+    public Author(String name, String info) {
+        this.name = name;
+        this.info = info;
     }
 
     public Long getId() {
@@ -44,6 +52,14 @@ public class Author {
         this.name = name;
     }
 
+    public String getLinkImage() {
+        return linkImage;
+    }
+
+    public void setLinkImage(String linkImage) {
+        this.linkImage = linkImage;
+    }
+
     public String getInfo() {
         return info;
     }
@@ -58,6 +74,10 @@ public class Author {
 
     public void setBooks(Set<Book> books) {
         this.books = books;
+    }
+
+    public void addBookInSet(Book book) {
+        this.books.add(book);
     }
 
     public Set<User> getFollowersUsers() {
@@ -87,5 +107,15 @@ public class Author {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Author{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", linkImage='" + linkImage + '\'' +
+                ", info='" + info + '\'' +
+                '}';
     }
 }
