@@ -20,10 +20,13 @@ public class Genre {
     @OneToMany(mappedBy = "genre")
     private Set<Book> books;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "preferenceGenres", fetch = FetchType.EAGER)
     private Set<User> usersPreferesGenre;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "authors_Genres",
+            joinColumns = { @JoinColumn(name = "genre_id") },
+            inverseJoinColumns = { @JoinColumn(name = "author_id") })
     private Set<Author> authorsGenres;
 
     public Long getId() {

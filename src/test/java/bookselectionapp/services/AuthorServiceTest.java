@@ -20,6 +20,5 @@ class AuthorServiceTest {
 
     @Test
     void getAllBooks() {
-        authorService.getAllBooks();
     }
 }

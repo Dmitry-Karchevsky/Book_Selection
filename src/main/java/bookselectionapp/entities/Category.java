@@ -19,7 +19,7 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private Set<Book> books;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "preferenceCategories", fetch = FetchType.EAGER)
     private Set<User> usersPreferesCategory;
 
     public Long getId() {

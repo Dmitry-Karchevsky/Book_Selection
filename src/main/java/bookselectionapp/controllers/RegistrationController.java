@@ -1,6 +1,7 @@
 package bookselectionapp.controllers;
 
 import bookselectionapp.entities.User;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.net.URI;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/registration")
+@Api(value = "registration")
 public class RegistrationController {
 
     @Autowired

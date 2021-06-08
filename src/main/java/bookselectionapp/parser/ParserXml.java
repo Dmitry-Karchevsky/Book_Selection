@@ -44,7 +44,7 @@ public class ParserXml {
         arrayBooksHrefOnXML.forEach(x -> addHrefsInOneFile(x, BOOKS_FILE));
     }
 
-    public void addHrefsInOneFile(String xmlFile, String pathFile) {
+    private void addHrefsInOneFile(String xmlFile, String pathFile) {
         try (FileWriter fileWriter = new FileWriter(pathFile, true)) {
             Document doc = Jsoup.connect(xmlFile).get();
             Elements elements = doc.select("loc");

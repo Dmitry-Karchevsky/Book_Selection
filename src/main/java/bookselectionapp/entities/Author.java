@@ -1,5 +1,7 @@
 package bookselectionapp.entities;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
@@ -8,24 +10,31 @@ import java.util.Set;
 public class Author {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @JsonView(Views.RequiredField.class)
     private Long id;
 
     @Column(length = 100, unique = true)
+    @JsonView(Views.RequiredField.class)
     private String name;
 
     @Column
+    @JsonView(Views.RequiredField.class)
     private String linkImage;
 
     @Column(length = 20000)
+    @JsonView(Views.RequiredField.class)
     private String info;
 
     @OneToMany(mappedBy = "author")
+    @JsonView(Views.NotRequiredField.class)
     private Set<Book> books;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "preferenceAuthors", fetch = FetchType.EAGER)
+    @JsonView(Views.NotRequiredField.class)
     private Set<User> followersUsers;
 
     @ManyToMany(mappedBy = "authorsGenres", fetch = FetchType.EAGER)
+    @JsonView(Views.NotRequiredField.class)
     private Set<Genre> preferenceGenres;
 
     public Author() {

@@ -1,6 +1,8 @@
 package bookselectionapp.entities;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,21 +10,25 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "usr")
+@ApiModel
 public class User implements UserDetails {
     @Id
     @Column(updatable = false)
-    @GenericGenerator(name="users_seq", strategy = "UseExistingOrGenerateIdGenerator")
-    @SequenceGenerator(name="users_seq", sequenceName="user_id_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    /*@GenericGenerator(name="users_seq", strategy = "UseExistingOrGenerateIdGenerator")
+    @SequenceGenerator(name="users_seq", sequenceName="user_id_seq", allocationSize=1)*/
     @JsonView(Views.RequiredField.class)
     private Long id;
 
     @Column(nullable = false, length = 60, unique = true)
     @JsonView(Views.RequiredField.class)
+    @ApiModelProperty(value = "email of user", example = "admin@admin.com")
     private String email;
 
     @Column(nullable = false, length = 100)
@@ -42,32 +48,54 @@ public class User implements UserDetails {
     @JsonView(Views.RequiredField.class)
     private String language;
 
+    @Column()
+    @JsonView(Views.RequiredField.class)
+    private Boolean isActive;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JsonView(Views.RequiredField.class)
     private Set<Role> roles;
 
-    @ManyToMany(mappedBy = "followersUsers", fetch = FetchType.EAGER)
     @JsonView(Views.NotRequiredField.class)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "preferenceAuthors",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "author_id") })
     private Set<Author> preferenceAuthors;
 
-    @ManyToMany(mappedBy = "usersReadBook", fetch = FetchType.EAGER)
     @JsonView(Views.NotRequiredField.class)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "readBooks",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "book_id") })
     private Set<Book> readBooks;
 
-    @ManyToMany(mappedBy = "usersPrefersBook", fetch = FetchType.EAGER)
     @JsonView(Views.NotRequiredField.class)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "preferenceBooks",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "book_id") })
     private Set<Book> preferenceBooks;
 
-    @ManyToMany(mappedBy = "usersLikedInCollectionBook", fetch = FetchType.EAGER)
     @JsonView(Views.NotRequiredField.class)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "likedCollectionBooks",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "book_id") })
     private Set<Book> likedCollectionBooks;
 
-    @ManyToMany(mappedBy = "usersPreferesGenre", fetch = FetchType.EAGER)
     @JsonView(Views.NotRequiredField.class)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "preferenceGenres",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "genre_id") })
     private Set<Genre> preferenceGenres;
 
-    @ManyToMany(mappedBy = "usersPreferesCategory", fetch = FetchType.EAGER)
     @JsonView(Views.NotRequiredField.class)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "preferenceCategories",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "category_id") })
     private Set<Category> preferenceCategories;
 
     public User() {
@@ -105,7 +133,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isActive;
     }
 
     public Long getId() {
@@ -152,6 +180,14 @@ public class User implements UserDetails {
         this.language = language;
     }
 
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
     public Set<Role> getRoles() {
         return roles;
     }
@@ -168,12 +204,26 @@ public class User implements UserDetails {
         this.preferenceAuthors = preferenceAuthors;
     }
 
+    public void addPreferenceAuthor(Author author) {
+        if (preferenceAuthors == null) {
+            preferenceAuthors = new HashSet<>();
+        }
+        preferenceAuthors.add(author);
+    }
+
     public Set<Book> getReadBooks() {
         return readBooks;
     }
 
     public void setReadBooks(Set<Book> readBooks) {
         this.readBooks = readBooks;
+    }
+
+    public void addReadBook(Book book) {
+        if (readBooks == null) {
+            readBooks = new HashSet<>();
+        }
+        readBooks.add(book);
     }
 
     public Set<Book> getPreferenceBooks() {
@@ -184,12 +234,26 @@ public class User implements UserDetails {
         this.preferenceBooks = preferenceBooks;
     }
 
+    public void addPreferenceBook(Book book) {
+        if (preferenceBooks == null) {
+            preferenceBooks = new HashSet<>();
+        }
+        preferenceBooks.add(book);
+    }
+
     public Set<Book> getLikedCollectionBooks() {
         return likedCollectionBooks;
     }
 
     public void setLikedCollectionBooks(Set<Book> likedCollectionBooks) {
         this.likedCollectionBooks = likedCollectionBooks;
+    }
+
+    public void addLikedCollectionBook(Book book) {
+        if (likedCollectionBooks == null) {
+            likedCollectionBooks = new HashSet<>();
+        }
+        likedCollectionBooks.add(book);
     }
 
     public Set<Genre> getPreferenceGenres() {
@@ -200,12 +264,26 @@ public class User implements UserDetails {
         this.preferenceGenres = preferenceGenres;
     }
 
+    public void addPreferenceGenre(Genre genre) {
+        if (preferenceGenres == null) {
+            preferenceGenres = new HashSet<>();
+        }
+        preferenceGenres.add(genre);
+    }
+
     public Set<Category> getPreferenceCategories() {
         return preferenceCategories;
     }
 
     public void setPreferenceCategories(Set<Category> preferenceCategories) {
         this.preferenceCategories = preferenceCategories;
+    }
+
+    public void addPreferenceCategory(Category category) {
+        if (preferenceCategories == null) {
+            preferenceCategories = new HashSet<>();
+        }
+        preferenceCategories.add(category);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package bookselectionapp.entities;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
@@ -8,42 +10,54 @@ import java.util.Set;
 public class Book {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @JsonView(Views.RequiredField.class)
     private Long id;
 
     @Column(nullable = false)
+    @JsonView(Views.RequiredField.class)
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
+    @JsonView(Views.RequiredField.class)
     private Author author;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "genre_id")
+    @JsonView(Views.RequiredField.class)
     private Genre genre;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
+    @JsonView(Views.RequiredField.class)
     private Category category;
 
     @Column
+    @JsonView(Views.RequiredField.class)
     private String ageCategory;
 
     @Column
+    @JsonView(Views.RequiredField.class)
     private String linkImage;
 
     @Column
+    @JsonView(Views.RequiredField.class)
     private Integer yearPublication;
 
     @Column(length = 20000)
+    @JsonView(Views.RequiredField.class)
     private String info;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "readBooks", fetch = FetchType.EAGER)
+    @JsonView(Views.NotRequiredField.class)
     private Set<User> usersReadBook;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "preferenceBooks", fetch = FetchType.EAGER)
+    @JsonView(Views.NotRequiredField.class)
     private Set<User> usersPrefersBook;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "likedCollectionBooks", fetch = FetchType.EAGER)
+    @JsonView(Views.NotRequiredField.class)
     private Set<User> usersLikedInCollectionBook;
 
     public Book() {

@@ -5,6 +5,7 @@ import bookselectionapp.entities.Views;
 import bookselectionapp.services.AuthorService;
 import bookselectionapp.services.UserService;
 import com.fasterxml.jackson.annotation.JsonView;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,18 +17,15 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/home")
+@Api(value = "home")
 public class HomePageController {
 
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private AuthorService authorService;
-
     @GetMapping
     @JsonView(Views.RequiredField.class)
     public List<User> readAll() {
-        authorService.getAllBooks();
         return userService.findAllUsers();
     }
 }
